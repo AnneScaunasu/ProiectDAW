@@ -9,5 +9,9 @@ namespace ProiectDAW
 
         [StringLength(20)]
         public string Name { get; set; } = string.Empty;
+
+        public int UserId { get; set; }
+
+        public NormalUser? NormalUser { get; set; }
     }
 }

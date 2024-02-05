@@ -11,6 +11,10 @@ namespace ProiectDAW.Data
         public DbSet<BookType> BookTypes { get; set; }
 
         public DbSet<BookShelf> BookShelf { get; set; }
+
+        public DbSet<NormalUser> NormalUsers { get; set; }
+
+        public DbSet<AdminUser> AdminUsers { get; set; }
     }
 }
   
