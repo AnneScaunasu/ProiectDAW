@@ -29,12 +29,12 @@ namespace ProiectDAW.Controllers
         }
 
         // GET: api/NormalUsers1/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NormalUser>> GetNormalUser(int id)
+        [HttpGet("{id}/{password}")]
+        public async Task<ActionResult<NormalUser>> GetNormalUser(int id, String password)
         {
             var normalUser = await _context.NormalUsers.FindAsync(id);
 
-            if (normalUser == null)
+            if (normalUser == null || normalUser.Password != password)
             {
                 return NotFound();
             }
@@ -75,36 +75,29 @@ namespace ProiectDAW.Controllers
 
         // POST: api/NormalUsers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("{adminId}")]
-        public async Task<ActionResult<NormalUser>> PostNormalUser(NormalUser normalUser, int adminId)
+        [HttpPost()]
+        public async Task<ActionResult<NormalUser>> PostNormalUser(NormalUser normalUser)
         {
-            if (_context.AdminUsers.Find(adminId) != null)
-            {
-                _context.NormalUsers.Add(normalUser);
-                await _context.SaveChangesAsync();
+            _context.NormalUsers.Add(normalUser);
+            await _context.SaveChangesAsync();
 
-                return CreatedAtAction("GetNormalUser", new { id = normalUser.Id }, normalUser);
-            }
-            return BadRequest();
+            return CreatedAtAction("GetNormalUser", new { id = normalUser.Id }, normalUser);
+
         }
 
         // DELETE: api/NormalUsers/5
-        [HttpDelete("{id}/{adminId}")]
-        public async Task<IActionResult> DeleteNormalUser(int id, int adminId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteNormalUser(int id)
         {
-            if (_context.AdminUsers.Find(adminId) != null)
+            var normalUser = await _context.NormalUsers.FindAsync(id);
+            if (normalUser == null)
             {
-                var normalUser = await _context.NormalUsers.FindAsync(id);
-                if (normalUser == null)
-                {
-                    return NotFound();
-                }
-
-                _context.NormalUsers.Remove(normalUser);
-                await _context.SaveChangesAsync();
-                return NoContent();
+                return NotFound();
             }
-            return BadRequest();
+
+            _context.NormalUsers.Remove(normalUser);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
 
         private bool NormalUserExists(int id)

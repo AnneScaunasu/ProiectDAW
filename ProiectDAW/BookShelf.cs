@@ -12,6 +12,8 @@ namespace ProiectDAW
 
         public int UserId { get; set; }
 
+        public string[] BookiIds { get; set; } = [];
+
         public NormalUser? NormalUser { get; set; }
     }
 }
